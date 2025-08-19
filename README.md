@@ -26,12 +26,25 @@ print(b.to("m"))  # 0.005
 
 # Unit arithmetic
 area = a * b / 2
-print(area)       # 0.0075 m^2
+print(area," = ",area.to("cm^2"))       # 0.0075 m^2 = 75 cm^2
 
 # Quantity conversion
 d = 1.30 * Unit("m")
 t = d / Constants.c * 1.33
-print(t.to("ns")) # Time for light to travel 1.33m in a medium, in ns
+print(t.to("ns")) # Time for light to travel 1.30m in water, in ns
+
+l_a = 5 * Unit("cm")
+l_b = 3 * Unit("cm")
+h = 3 * Unit("cm")
+S = (l_a+l_b)*h/2
+print(S)
+
+V= 10*Unit("V")
+R=50*Unit("kOhm")
+I=V/R
+print(I)
+Power=I**2*R
+print(Power)
 
 # Physical constants
 print(Constants.c)    # Speed of light

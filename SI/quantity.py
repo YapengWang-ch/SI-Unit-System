@@ -28,7 +28,7 @@ class Quantity:
         return Quantity(self.value * conversion_factor, target_unit)
     
     def toMeV(self):
-        from .contants import Constants
+        from .constants import Constants
         if self.unit.is_compatible(Unit("kg")):
             return (self*Constants.c**2).to("MeV")
         if self.unit.is_compatible(Unit("kg*m/s")):
@@ -38,7 +38,7 @@ class Quantity:
         raise ValueError(f"Unit can't convert to MeV: {self.unit} ")
     
     def tonm(self):
-        from .contants import Constants
+        from .constants import Constants
         if self.unit.is_compatible(Unit("m")):
             return self.to("nm")
         elif self.unit.is_compatible(Unit("eV")):
@@ -46,7 +46,7 @@ class Quantity:
         raise ValueError(f"Unit can't convert to nm: {self.unit} ")
     
     def toeV(self):
-        from .contants import Constants
+        from .constants import Constants
         if self.unit.is_compatible(Unit("m")):
             return (Constants.h*Constants.c/self).to("eV")
         elif self.unit.is_compatible(Unit("eV")):
@@ -93,8 +93,8 @@ class Quantity:
     def __str__(self):
         # 简化无量纲单位的显示
         if self.unit.name == '1':
-            return f"{self.value}"
-        return f"{self.value} {self.unit.name}"
+            return f"{round(self.value,6)}"
+        return f"{round(self.value,6)} {self.unit.name}"
     
     def __repr__(self):
         return f"Quantity({self.value}, {repr(self.unit)})"

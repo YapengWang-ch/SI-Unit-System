@@ -107,6 +107,11 @@ class Unit:
             total_factor *= f ** exp
             for b, e in base.items():
                 expanded[b] += e * exp
+        # 清除指数为0的单位
+        expanded = {k: v for k, v in expanded.items() if v != 0 and k != '1'}
+        if not expanded:
+            expanded = {'1': 1} 
+        
         self.base_units = dict(expanded)
         self.factor = total_factor
         # self.base_units = self._unitdict_expanded
@@ -170,15 +175,19 @@ class Unit:
         返回 (换算因子, 导出单位)
         """
         # 单量纲且只有1阶
-        if len(self._unitdict_raw) == 1 and sum(self._unitdict_raw.values()) == 1:
+        new_base = {k: v for k, v in self._unitdict_raw.items() if v != 0 and k != '1'}
+        if len(new_base) == 1 and sum(new_base.values()) == 1:
             return 1, self
 
         normalized_base = {k: v for k, v in sorted(self.base_units.items()) if v != 0}
-
+        if len(normalized_base) == 1 and sum(normalized_base.values()) == 1:
+            unit_name = next(iter(normalized_base))
+            return self.factor, Unit(unit_name)
+        #     return 1, self
         # 1. 首先尝试查找精确匹配
         for unit_name, (factor, unit_def) in UnitSystem.DERIVED_UNITS.items():
-            if unit_def == normalized_base and factor == self.factor:
-                return 1, Unit(unit_name)
+            if unit_def == normalized_base:
+                return self.factor/factor, Unit(unit_name)
 
         if not normalized_base or normalized_base == {'1': 1}:
             return 1, Unit("1")
@@ -232,6 +241,8 @@ class Unit:
             if not new_base:
                 new_base = {'1': 1}
             return Unit._from_unitdict(new_base)
+        elif isinstance(other, (int, float)):
+            return other * self
 
     def __pow__(self, power):
         new_base = {unit: exp * power for unit, exp in self._unitdict_raw.items()}

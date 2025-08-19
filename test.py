@@ -15,6 +15,24 @@ from math import sqrt
 # aa= 3 * Unit("s")
 # print(aa.unit.base_units)
 
+# print(Constants.c, Constants.h, (1*Unit("eV")).to("J"))
+
+# nm=Unit("nm")
+# a=[270*nm, 680*nm]
+# for u in a:
+#     print(u.toeV())
+
+# V= 10*Unit("V")
+# R=50*Unit("kOhm")
+# I=V/R
+# # print(I,I.unit.base_units)
+# Power=I**2*R
+# # print(Power)
+# a = 10*Unit("uF")
+# charge = a * V
+# maintime = charge / I
+# print(charge, maintime.to("ms"))
+
 def test_complex_unit_ops():
     print("\n==== 复杂单位运算与转化 ====")
     # 1. 功率 = 力 * 速度
@@ -60,3 +78,4 @@ def test_complex_unit_ops():
 
 if __name__ == "__main__":
     test_complex_unit_ops()
+    print((1*Unit("inch")).to("cm"))
